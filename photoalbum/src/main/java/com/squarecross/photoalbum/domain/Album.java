@@ -10,7 +10,7 @@ public class Album {
 
     public Album() {};
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "album")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "album", cascade = CascadeType.ALL)
     private List<Photo> photos;
 
     @Id
@@ -18,7 +18,7 @@ public class Album {
     @Column(name = "album_id", unique = true, nullable = false)
     private Long albumId;
 
-    @Column(name = "album_name", unique = false, nullable = false)
+    @Column(name = "album_name", unique = false, nullable = true)
     private String albumName;
 
     @Column(name = "created_at", unique = false, nullable = true)

@@ -5,7 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.*;
 
 @Entity
-@Table(name="photo", schema="photo_album", uniqueConstraints = {@UniqueConstraint(columnNames = "album_id")})
+@Table(name="photo", schema="photo_album", uniqueConstraints = {@UniqueConstraint(columnNames = "photo_id")})
 public class Photo {
     public Photo() {};
 
@@ -17,10 +17,10 @@ public class Photo {
     @Column(name = "file_name", unique = false, nullable = true)
     private String fileName;
 
-    @Column(name = "thumb_url", unique = true, nullable = true)
+    @Column(name = "thumb_url", unique = false, nullable = true)
     private String thumbUrl;
 
-    @Column(name = "original_url", unique = true, nullable = true)
+    @Column(name = "original_url", unique = false, nullable = true)
     private String originalUrl;
 
     @Column(name = "file_size", unique = false, nullable = true)
@@ -82,4 +82,11 @@ public class Photo {
         this.uploadedAt = uploadedAt;
     }
 
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
 }
