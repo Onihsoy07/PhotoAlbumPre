@@ -1,10 +1,15 @@
 package com.squarecross.photoalbum.domain;
 
 import javax.persistence.*;
+
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import java.util.*;
 
 @Entity
+@Setter
+@Getter
 @Table(name="album", schema="photo_album", uniqueConstraints = {@UniqueConstraint(columnNames = "album_id")})
 public class Album {
 
@@ -25,27 +30,4 @@ public class Album {
     @CreationTimestamp
     private Date createdAt;
 
-    public Long getAlbumId() {
-        return albumId;
-    }
-
-    public void setAlbumId(Long albumId) {
-        this.albumId = albumId;
-    }
-
-    public String getAlbumName() {
-        return albumName;
-    }
-
-    public void setAlbumName(String albumName) {
-        this.albumName = albumName;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
 }

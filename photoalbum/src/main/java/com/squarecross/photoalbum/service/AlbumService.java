@@ -35,10 +35,12 @@ public class AlbumService {
 //        Optional<Album> res = albumRepository.findByAlbumName(albumName);
 //        if (res.isPresent()) {
 //            AlbumDto albumDto = AlbumMapper.convertToDto(res.get());
-//            albumDto.setCount(photoRepository.countByAlbum_AlbumId(albumId));
+//            albumDto.setCount(photoRepository.countByAlbum_AlbumId(res.get().getAlbumId()));
 //            return albumDto;
 //        } else {
 //            throw new EntityNotFoundException(String.format("앨범명 %s로 조회되지 않았습니다.", albumName));
 //        }
 //    }
+
+
 }

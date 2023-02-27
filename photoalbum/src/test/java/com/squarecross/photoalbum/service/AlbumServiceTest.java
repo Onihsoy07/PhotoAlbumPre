@@ -45,17 +45,11 @@ class AlbumServiceTest {
 
         Photo photo1 = new Photo();
         photo1.setFileName("사진1");
-//        photo1.setFileSize(new Long(10));
-//        photo1.setOriginalUrl("httpss");
-//        photo1.setThumbUrl("httpss");
         photo1.setAlbum(saveAlbum);
         photoRepository.save(photo1);
 
         Photo photo2 = new Photo();
         photo2.setFileName("사진2");
-//        photo2.setFileSize(new Long(100));
-//        photo2.setOriginalUrl("httpsss");
-//        photo2.setThumbUrl("httpsss");
         photo2.setAlbum(saveAlbum);
         photoRepository.save(photo2);
 
