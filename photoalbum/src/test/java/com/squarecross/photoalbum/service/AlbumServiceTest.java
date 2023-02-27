@@ -1,6 +1,5 @@
 package com.squarecross.photoalbum.service;
 
-import com.squarecross.photoalbum.mapper.AlbumMapper;
 import com.squarecross.photoalbum.repository.PhotoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +9,11 @@ import com.squarecross.photoalbum.domain.*;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.squarecross.photoalbum.dto.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,4 +61,42 @@ class AlbumServiceTest {
 
         assertEquals(2, resAlbum.getCount());
     }
+
+    @Test
+    void testCreateAlbum() throws IOException {
+        AlbumDto albumDto1 = new AlbumDto();
+        albumDto1.setAlbumName("새 앨범 1");
+        AlbumDto savedAlbumDto1 = albumService.createAlbum(albumDto1);
+
+        File originalFile = new File(String.format(Constant.PATH_PREFIX + "/photos/original/" + savedAlbumDto1.getAlbumId()));
+        File thumbFile = new File(String.format(Constant.PATH_PREFIX + "/photos/thumb/" + savedAlbumDto1.getAlbumId()));
+
+        assertTrue(originalFile.exists()&&thumbFile.exists());
+
+        albumService.deletAlbum(savedAlbumDto1);
+
+        assertTrue(!(originalFile.exists()&&thumbFile.exists()));
+    }
+
+    @Test
+    void testAlbumSort() throws InterruptedException {
+        Album album1 = new Album();
+        Album album2 = new Album();
+        album1.setAlbumName("aaab");
+        album2.setAlbumName("aaaa");
+
+        albumRepository.save(album1);
+        TimeUnit.SECONDS.sleep(1);
+        albumRepository.save(album2);
+
+        List<Album> resDate = albumRepository.findByAlbumNameContainingOrderByCreatedAtDesc("aaa");
+        assertEquals("aaab", resDate.get(0).getAlbumName());
+        assertEquals("aaaa", resDate.get(1).getAlbumName());
+
+        List<Album> resName = albumRepository.findByAlbumNameContainingOrderByAlbumNameAsc("aaa");
+        assertEquals("aaab", resDate.get(0).getAlbumName());
+        assertEquals("aaaa", resDate.get(1).getAlbumName());
+
+    }
+
 }
