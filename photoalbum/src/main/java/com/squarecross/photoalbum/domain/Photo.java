@@ -29,7 +29,7 @@ public class Photo {
     private String originalUrl;
 
     @Column(name = "file_size", unique = false, nullable = true)
-    private Long fileSize;
+    private Integer fileSize;
 
     @Column(name = "uploaded_at", unique = false, nullable = true)
     @CreationTimestamp

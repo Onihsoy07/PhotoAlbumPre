@@ -9,10 +9,10 @@ import java.util.*;
 @Setter
 @Getter
 public class AlbumDto {
-    Long albumId;
-    String albumName;
-    Date createdAt;
-    int count;
+    private Long albumId;
+    private String albumName;
+    private Date createdAt;
+    private int count;
 
     private List<String> thumbUrls;
 

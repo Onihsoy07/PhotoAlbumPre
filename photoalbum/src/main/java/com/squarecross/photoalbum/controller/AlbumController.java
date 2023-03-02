@@ -37,19 +37,32 @@ public class AlbumController {
         return new ResponseEntity<>(savedAlbumDto, HttpStatus.OK);
     }
 
-//    @PostMapping("")
-//    public ResponseEntity<AlbumDto> createAlbum(@RequestBody final AlbumDto albumDto) throws IOException {
-//        AlbumDto savedAlbumDto = albumService.createAlbum(albumDto);
-//        return new ResponseEntity<>(savedAlbumDto, HttpStatus.OK);
-//    }
-
     @PostMapping("")
+    public ResponseEntity<AlbumDto> createAlbum(@RequestBody final AlbumDto albumDto) throws IOException {
+        AlbumDto savedAlbumDto = albumService.createAlbum(albumDto);
+        return new ResponseEntity<>(savedAlbumDto, HttpStatus.OK);
+    }
+
+    @GetMapping("")
     public ResponseEntity<List<AlbumDto>>
     getAlbumList(@RequestParam(value = "keyword", required = false, defaultValue = "") final String keyword,
                  @RequestParam(value = "sort", required = false, defaultValue = "byDate") final String sort,
                  @RequestParam(value = "orderBy", required = false, defaultValue = "asc") final String orderBy) {
         List<AlbumDto> albumDtos = albumService.getAlbumList(keyword, sort, orderBy);
         return new ResponseEntity<>(albumDtos, HttpStatus.OK);
+    }
+
+    @PutMapping("/{albumId}")
+    public ResponseEntity<AlbumDto> updateAlbum(@PathVariable final Long albumId,
+                                                @RequestBody final AlbumDto albumDto) {
+        AlbumDto res = albumService.changeName(albumId, albumDto);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{albumId}")
+    public ResponseEntity<Void> deleteAlbum(@PathVariable final Long albumId) throws IOException {
+        albumService.deleteAlbum(albumId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

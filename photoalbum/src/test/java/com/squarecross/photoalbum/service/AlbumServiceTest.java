@@ -73,7 +73,7 @@ class AlbumServiceTest {
 
         assertTrue(originalFile.exists()&&thumbFile.exists());
 
-        albumService.deletAlbum(savedAlbumDto1);
+        albumService.deleteAlbum(savedAlbumDto1.getAlbumId());
 
         assertTrue(!(originalFile.exists()&&thumbFile.exists()));
     }
@@ -90,12 +90,29 @@ class AlbumServiceTest {
         albumRepository.save(album2);
 
         List<Album> resDate = albumRepository.findByAlbumNameContainingOrderByCreatedAtDesc("aaa");
-        assertEquals("aaab", resDate.get(0).getAlbumName());
-        assertEquals("aaaa", resDate.get(1).getAlbumName());
+        assertEquals("aaaa", resDate.get(0).getAlbumName());
+        assertEquals("aaab", resDate.get(1).getAlbumName());
 
         List<Album> resName = albumRepository.findByAlbumNameContainingOrderByAlbumNameAsc("aaa");
-        assertEquals("aaab", resDate.get(0).getAlbumName());
-        assertEquals("aaaa", resDate.get(1).getAlbumName());
+        assertEquals("aaaa", resDate.get(0).getAlbumName());
+        assertEquals("aaab", resDate.get(1).getAlbumName());
+
+    }
+
+    @Test
+    void testChangeName() throws IOException {
+        AlbumDto albumDto = new AlbumDto();
+        albumDto.setAlbumName("변경전");
+        AlbumDto savedAlbumDto = albumService.createAlbum(albumDto);
+
+        AlbumDto updateAlbumDto = new AlbumDto();
+        updateAlbumDto.setAlbumName("변경후");
+        Long albumId = savedAlbumDto.getAlbumId();
+        albumService.changeName(albumId, updateAlbumDto);
+
+        AlbumDto updatedAlbumDto = albumService.getAlbum(albumId);
+
+        assertEquals("변경후", updatedAlbumDto.getAlbumName());
 
     }
 

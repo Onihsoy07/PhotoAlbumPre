@@ -61,13 +61,6 @@ public class AlbumService {
         Files.createDirectories(Paths.get(Constant.PATH_PREFIX + "/photos/thumb/" + album.getAlbumId()));
     }
 
-    //추후 앨범 데이터 삭제 추가
-    public AlbumDto deletAlbum(AlbumDto albumDto) throws IOException {
-        Album album = AlbumMapper.convertToModel(albumDto);
-        this.deleteAlbumDirectories(album);
-        return null;
-    }
-
     private void deleteAlbumDirectories(Album album) throws IOException {
         File originalFile = new File(String.format(Constant.PATH_PREFIX + "/photos/original/" + album.getAlbumId()));
         File thumbFile = new File(String.format(Constant.PATH_PREFIX + "/photos/thumb/" + album.getAlbumId()));
@@ -99,6 +92,29 @@ public class AlbumService {
 
         return albumDtos;
     }
+
+    public AlbumDto changeName(Long albumId, AlbumDto albumDto) {
+        Optional<Album> album = this.albumRepository.findById(albumId);
+        if(album.isEmpty()) {
+            throw new NoSuchElementException(String.format("Album Id '%d'가 존재하지 않습니다.", albumId));
+        }
+
+        Album updateAlbum = album.get();
+        updateAlbum.setAlbumName(albumDto.getAlbumName());
+        Album savedAlbum = albumRepository.save(updateAlbum);
+        return AlbumMapper.convertToDto(savedAlbum);
+    }
+
+    public void deleteAlbum(Long albumId) throws IOException {
+        Optional<Album> album = this.albumRepository.findById(albumId);
+        if(album.isEmpty()) {
+            throw new NoSuchElementException(String.format("Album Id '%d'가 존재하지 않습니다.", albumId));
+        }
+
+        this.deleteAlbumDirectories(album.get());
+        albumRepository.deleteById(albumId);
+    }
+
 
 
 }
